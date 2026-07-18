@@ -1,0 +1,28 @@
+file-explorer
+├── exploler
+│   └── main.go
+├── go.mod
+├── internal
+│   ├── cli
+│   │   ├── app.go
+│   │   ├── dispatch.go
+│   │   ├── flags.go
+│   │   ├── help.go
+│   │   ├── search_command.go
+│   │   ├── tree_command.go
+│   │   └── version.go
+│   ├── search
+│   │   ├── matcher.go
+│   │   ├── options.go
+│   │   ├── result.go
+│   │   └── search.go
+│   └── tree
+│       ├── helpers.go
+│       ├── option.go
+│       ├── result.go
+│       ├── tree.go
+│       └── walk.go
+└── result.txt
+
+Directories: 5
+Files: 19

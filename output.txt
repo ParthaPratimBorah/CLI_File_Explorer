@@ -1,0 +1,54 @@
+file-explorer
+├── app.log
+├── explorer
+│   └── main.go
+├── explorer.exe
+├── go.mod
+├── internal
+│   ├── cli
+│   │   ├── app.go
+│   │   ├── confirm.go
+│   │   ├── copy_command.go
+│   │   ├── delete_command.go
+│   │   ├── dispatch.go
+│   │   ├── flags.go
+│   │   ├── help.go
+│   │   ├── move_command.go
+│   │   ├── search_command.go
+│   │   ├── tree_command.go
+│   │   └── version.go
+│   ├── fileops
+│   │   ├── copy.go
+│   │   ├── delete.go
+│   │   ├── helpers.go
+│   │   └── move.go
+│   ├── search
+│   │   ├── matcher.go
+│   │   ├── options.go
+│   │   ├── result.go
+│   │   └── search.go
+│   └── tree
+│       ├── helpers.go
+│       ├── option.go
+│       ├── result.go
+│       ├── tree.go
+│       └── walk.go
+├── output.txt
+├── result.txt
+└── testdata
+    ├── Documents
+    │   ├── Notes
+    │   │   ├── Ideas.md
+    │   │   └── Todo.md
+    │   ├── Photos
+    │   │   ├── IMG001.jpg
+    │   │   └── IMG002.jpg
+    │   └── Resume.pdf
+    ├── EmptyFolder
+    └── Reports
+        ├── invoice-old.pdf
+        ├── invoice.pdf
+        └── report.txt
+
+Directories: 12
+Files: 38
