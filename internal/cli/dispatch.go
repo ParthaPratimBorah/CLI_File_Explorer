@@ -17,18 +17,22 @@ func (app *App) dispatch(command string, args []string) int {
 	case "move":
 		return app.runMoveCommand(args)
 
+	case "rename":
+		return app.runRenameCommand(args)
+
 	case "delete":
 		return app.runDeleteCommand(args)
 
-	case "rename",
-		"compare",
+	case "info":
+		return app.runInfoCommand(args)
+
+	case "compare",
 		"duplicate",
 		"stats",
 		"export",
 		"hash",
 		"encode",
-		"decode",
-		"info":
+		"decode":
 
 		fmt.Fprintf(
 			app.Writer,

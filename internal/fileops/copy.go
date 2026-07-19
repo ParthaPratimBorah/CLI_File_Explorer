@@ -164,7 +164,7 @@ func copyFile(
 	return nil
 }
 
-// copyDirectory copies a directory and all its contents.
+// copyDirectory copies a directory and all its contents
 func copyDirectory(
 	sourcePath string,
 	destinationPath string,
@@ -179,7 +179,7 @@ func copyDirectory(
 		)
 	}
 
-	// Create the destination directory.
+	// Create the destination directory
 	err = os.MkdirAll(
 		destinationPath,
 		sourceInfo.Mode(),
@@ -204,22 +204,12 @@ func copyDirectory(
 	}
 
 	for _, entry := range entries {
-		childSource := filepath.Join(
-			sourcePath,
-			entry.Name(),
-		)
+		childSource := filepath.Join(sourcePath, entry.Name())
 
-		childDestination := filepath.Join(
-			destinationPath,
-			entry.Name(),
-		)
+		childDestination := filepath.Join(destinationPath, entry.Name())
 
 		if entry.IsDir() {
-			err = copyDirectory(
-				childSource,
-				childDestination,
-				overwrite,
-			)
+			err = copyDirectory(childSource, childDestination, overwrite)
 		} else {
 			err = copyFile(
 				childSource,

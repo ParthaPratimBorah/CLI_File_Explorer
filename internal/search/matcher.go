@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-//information to match a filename sob yat store thakibo
+// information to match a filename sob yat store thakibo
 type fileMatcher struct {
-	options Options
-	regularExpression *regexp.Regexp 		//only used when regex flag is enabled
+	options           Options
+	regularExpression *regexp.Regexp //only used when regex flag is enabled
 }
 
-//creates a matcher
+// creates a matcher
 func newMatcher(options Options) (*fileMatcher, error) {
 	matcher := &fileMatcher{
 		options: options,
@@ -70,7 +70,7 @@ func (matcher *fileMatcher) matches(name string) bool {
 // matchExtension compares file extensions.
 func (matcher *fileMatcher) matchExtension(name string) bool {
 	extension := filepath.Ext(name)
-	
+
 	// Remove the dot so that the user can search "pdf".
 	extension = strings.TrimPrefix(extension, ".")
 

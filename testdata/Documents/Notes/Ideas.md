@@ -1,1 +1,1 @@
-Ideas content
+ideas content

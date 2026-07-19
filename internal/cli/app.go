@@ -12,8 +12,8 @@ type App struct {
 	Version   string
 	Verbose   bool
 	Recursive bool
-	Writer io.Writer
-	Logger *log.Logger //log message dibole 
+	Writer    io.Writer
+	Logger    *log.Logger //log message dibole
 
 	// these files are stored so that we can close them later
 	outputFile *os.File
@@ -24,8 +24,8 @@ type App struct {
 func NewApp() *App {
 	return &App{
 		Version: "1.0.0",
-		Writer: os.Stdout,		// default output in the terminal
-		Logger: log.New(io.Discard, "", log.LstdFlags), 	// default logging is disabled
+		Writer:  os.Stdout,                              // default output in the terminal
+		Logger:  log.New(io.Discard, "", log.LstdFlags), // default logging is disabled
 	}
 }
 
@@ -75,8 +75,8 @@ func (app *App) Run(args []string) int {
 		app.showHelp()
 		return 0
 	}
-	command := remainingArguments[0]		// first remaining argument = command
-	commandArguments := remainingArguments[1:]		// the rest belongs to commandArguments
+	command := remainingArguments[0]           // first remaining argument = command
+	commandArguments := remainingArguments[1:] // the rest belongs to commandArguments
 
 	if app.Verbose {
 		fmt.Fprintln(app.Writer, "Running command:", command)

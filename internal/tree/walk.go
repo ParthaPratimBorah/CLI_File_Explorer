@@ -8,7 +8,7 @@ import (
 	"sort"
 )
 
-//reads and displays one directory
+// reads and displays one directory
 func walkDirectory(
 	currentPath string,
 	prefix string,
@@ -51,9 +51,9 @@ func walkDirectory(
 
 		entryName := entry.Name()
 
-		fmt.Fprint( writer, prefix, connector, entryName)
+		fmt.Fprint(writer, prefix, connector, entryName)
 
-		fullPath := filepath.Join(currentPath,entryName)
+		fullPath := filepath.Join(currentPath, entryName)
 
 		if entry.IsDir() {
 			result.DirectoryCount++
@@ -71,7 +71,7 @@ func walkDirectory(
 					)
 				}
 
-				fmt.Fprintf(writer," (%s)",formatSize(fileInfo.Size()))
+				fmt.Fprintf(writer, " (%s)", formatSize(fileInfo.Size()))
 			}
 		}
 
@@ -87,7 +87,7 @@ func walkDirectory(
 				newPrefix += "│   "
 			}
 
-			err = walkDirectory( fullPath, newPrefix, depth+1, options, writer, result)
+			err = walkDirectory(fullPath, newPrefix, depth+1, options, writer, result)
 
 			if err != nil {
 				return err

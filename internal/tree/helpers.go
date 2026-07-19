@@ -30,12 +30,12 @@ func filterEntries(
 	return visibleEntries
 }
 
-//checks whether dot (.env) files
+// checks whether dot (.env) files
 func isHidden(name string) bool {
 	return strings.HasPrefix(name, ".")
 }
 
-//returns the folder name that should be displayed
+// returns the folder name that should be displayed
 func getRootName(rootPath string) string {
 	absolutePath, err := filepath.Abs(rootPath)
 

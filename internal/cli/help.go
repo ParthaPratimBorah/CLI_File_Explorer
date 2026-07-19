@@ -16,7 +16,7 @@ func (app *App) showHelp() {
 	fmt.Fprintln(app.Writer, "  search     Search files and directories")
 	fmt.Fprintln(app.Writer, "  copy       Copy files or directories")
 	fmt.Fprintln(app.Writer, "  move       Move files or directories")
-	fmt.Fprintln(app.Writer, "  rename     Rename a file or directory")
+	fmt.Fprintln(app.Writer, "  rename     Rename files or directories")
 	fmt.Fprintln(app.Writer, "  delete     Delete a file or directory")
 	fmt.Fprintln(app.Writer, "  compare    Compare two files")
 	fmt.Fprintln(app.Writer, "  duplicate  Find duplicate files")
@@ -60,6 +60,18 @@ func (app *App) showHelp() {
 
 	fmt.Fprintln(app.Writer, "Move Flags:")
 	fmt.Fprintln(app.Writer, "  --overwrite     Replace an existing destination")
+	fmt.Fprintln(app.Writer)
+
+	fmt.Fprintln(app.Writer, "Rename Flags:")
+	fmt.Fprintln(app.Writer, "  --new-name NAME  Rename one item")
+	fmt.Fprintln(app.Writer, "  --batch          Enable batch rename")
+	fmt.Fprintln(app.Writer, "  --prefix TEXT    Add text before names")
+	fmt.Fprintln(app.Writer, "  --suffix TEXT    Add text after names")
+	fmt.Fprintln(app.Writer, "  --replace TEXT   Text to replace")
+	fmt.Fprintln(app.Writer, "  --with TEXT      Replacement text")
+	fmt.Fprintln(app.Writer, "  --regex PATTERN  Regex rename pattern")
+	fmt.Fprintln(app.Writer, "  --overwrite      Replace an existing item")
+	fmt.Fprintln(app.Writer, "  --force          Skip batch confirmation")
 	fmt.Fprintln(app.Writer)
 
 	fmt.Fprintln(app.Writer, "Delete Flags:")
