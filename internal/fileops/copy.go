@@ -8,9 +8,6 @@ import (
 )
 
 // Copy copies a file or directory.
-//
-// recursive must be true when copying a directory.
-// overwrite must be true when replacing an existing destination.
 func Copy(
 	sourcePath string,
 	destinationPath string,

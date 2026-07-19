@@ -6,7 +6,6 @@ import (
 )
 
 // Delete deletes a file or directory.
-//
 // A non-empty directory requires recursive to be true.
 func Delete(path string, recursive bool) error {
 	fileInfo, err := os.Stat(path)

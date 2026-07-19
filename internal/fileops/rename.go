@@ -24,13 +24,6 @@ type RenameResult struct {
 }
 
 // Rename renames one file or directory.
-//
-// The newName should only contain the new file or directory name.
-//
-// Example:
-//
-//	sourcePath: documents\old.txt
-//	newName:    new.txt
 func Rename(
 	sourcePath string,
 	newName string,
@@ -50,8 +43,7 @@ func Rename(
 		)
 	}
 
-	// Prevent paths such as another-folder/new.txt.
-	// Rename should only change the item's name.
+	// Prevent paths such as another-folder/new.txt
 	if filepath.Base(newName) != newName {
 		return fmt.Errorf(
 			"new name should not contain a directory path",
@@ -130,23 +122,16 @@ func BatchRename(
 	}
 
 	if !hasRenameOperation(options) {
-		return results, fmt.Errorf(
-			"provide a prefix, suffix, replacement, or regex pattern",
-		)
+		return results, fmt.Errorf("provide a prefix, suffix, replacement, or regex pattern")
 	}
 
 	var compiledRegex *regexp.Regexp
 
 	if options.RegexPattern != "" {
-		compiledRegex, err = regexp.Compile(
-			options.RegexPattern,
-		)
+		compiledRegex, err = regexp.Compile(options.RegexPattern)
 
 		if err != nil {
-			return results, fmt.Errorf(
-				"invalid rename regular expression: %w",
-				err,
-			)
+			return results, fmt.Errorf("invalid rename regular expression: %w",err)
 		}
 	}
 
@@ -307,11 +292,7 @@ func createNewName(
 	return newName
 }
 
-// addSuffix adds a suffix before the file extension.
-//
-// Example:
-//
-//	report.txt + _old = report_old.txt
+// addSuffix adds a suffix before the file extension
 func addSuffix(
 	name string,
 	suffix string,

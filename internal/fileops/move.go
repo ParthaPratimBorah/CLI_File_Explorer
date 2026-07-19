@@ -6,13 +6,7 @@ import (
 )
 
 // Move moves a file or directory.
-//
-// The destination can also contain a new filename.
-//
-// Example:
-//
-//	old/report.txt
-//	new/final-report.txt
+
 func Move(
 	sourcePath string,
 	destinationPath string,

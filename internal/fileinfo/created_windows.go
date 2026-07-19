@@ -1,5 +1,3 @@
-//go:build windows
-
 package fileinfo
 
 import (
@@ -9,9 +7,7 @@ import (
 )
 
 // getCreatedTime reads the Windows file creation time.
-func getCreatedTime(
-	fileInfo os.FileInfo,
-) (time.Time, bool) {
+func getCreatedTime(fileInfo os.FileInfo) (time.Time, bool) {
 	fileData, ok := fileInfo.Sys().(
 		*syscall.Win32FileAttributeData)
 

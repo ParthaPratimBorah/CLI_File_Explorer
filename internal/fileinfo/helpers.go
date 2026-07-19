@@ -66,35 +66,26 @@ func getFileType(fileInfo os.FileInfo) string {
 	}
 }
 
-// isHidden checks names beginning with a dot.
+//checks names beginning with a dot
 func isHidden(name string) bool {
 	return strings.HasPrefix(name, ".")
 }
 
 // calculateChecksum calculates a SHA-256 checksum.
-//
-// A checksum is only calculated for regular files.
 func calculateChecksum(path string) (string, error) {
 	file, err := os.Open(path)
 
 	if err != nil {
-		return "", fmt.Errorf(
-			"could not open file for checksum: %w",
-			err,
-		)
+		return "", fmt.Errorf("could not open file for checksum: %w", err)
 	}
 
-	defer file.Close()
-
+	defer file.Close
 	hash := sha256.New()
 
 	_, err = io.Copy(hash, file)
 
 	if err != nil {
-		return "", fmt.Errorf(
-			"could not calculate checksum: %w",
-			err,
-		)
+		return "", fmt.Errorf("could not calculate checksum: %w",err)
 	}
 
 	return fmt.Sprintf("%x", hash.Sum(nil)), nil
@@ -108,10 +99,7 @@ func getRelativePath(absolutePath string) string {
 		return absolutePath
 	}
 
-	relativePath, err := filepath.Rel(
-		currentDirectory,
-		absolutePath,
-	)
+	relativePath, err := filepath.Rel(currentDirectory,absolutePath,)
 
 	if err != nil {
 		return absolutePath
