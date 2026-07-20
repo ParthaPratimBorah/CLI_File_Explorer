@@ -5,19 +5,15 @@ import (
 	"fmt"
 	"io"
 	"os"
-
 	"file-explorer/internal/fileops"
 )
 
-// runCopyCommand handles the copy command.
+//handles the copy command
 func (app *App) runCopyCommand(args []string) int {
 	var recursive bool
 	var overwrite bool
 
-	flagSet := flag.NewFlagSet(
-		"copy",
-		flag.ContinueOnError,
-	)
+	flagSet := flag.NewFlagSet("copy", flag.ContinueOnError)
 
 	flagSet.SetOutput(io.Discard)
 
@@ -38,11 +34,7 @@ func (app *App) runCopyCommand(args []string) int {
 	err := flagSet.Parse(args)
 
 	if err != nil {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: invalid copy flags:",
-			err,
-		)
+		fmt.Fprintln(app.Writer,"Error: invalid copy flags:",err)
 
 		return 1
 	}
@@ -50,10 +42,7 @@ func (app *App) runCopyCommand(args []string) int {
 	remainingArguments := flagSet.Args()
 
 	if len(remainingArguments) != 2 {
-		fmt.Fprintln(
-			app.Writer,
-			"Usage: explorer copy [flags] <source> <destination>",
-		)
+		fmt.Fprintln(app.Writer,"Usage: explorer copy [flags] <source> <destination>")
 
 		return 1
 	}
@@ -64,35 +53,21 @@ func (app *App) runCopyCommand(args []string) int {
 	sourceInfo, err := os.Stat(sourcePath)
 
 	if err != nil {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: could not access source:",
-			err,
-		)
+		fmt.Fprintln(app.Writer,"Error: could not access source:",err)
 
 		return 1
 	}
 
-	finalDestination := fileops.PrepareDestination(
-		sourcePath,
-		destinationPath,
-		sourceInfo.IsDir(),
-	)
+	finalDestination := fileops.PrepareDestination(sourcePath,destinationPath,sourceInfo.IsDir())
 
 	// Ask before replacing an existing destination.
 	if fileops.PathExists(finalDestination) && !overwrite {
 		confirmed := askForConfirmation(
-			fmt.Sprintf(
-				"%s already exists. Overwrite it?",
-				finalDestination,
-			),
+			fmt.Sprintf("%s already exists. Overwrite it?",finalDestination),
 		)
 
 		if !confirmed {
-			fmt.Fprintln(
-				app.Writer,
-				"Copy cancelled.",
-			)
+			fmt.Fprintln(app.Writer,"Copy cancelled.")
 
 			return 0
 		}
@@ -100,12 +75,7 @@ func (app *App) runCopyCommand(args []string) int {
 		overwrite = true
 	}
 
-	err = fileops.Copy(
-		sourcePath,
-		destinationPath,
-		recursive,
-		overwrite,
-	)
+	err = fileops.Copy(sourcePath,destinationPath,recursive,overwrite)
 
 	if err != nil {
 		fmt.Fprintln(app.Writer, "Error:", err)
@@ -114,16 +84,9 @@ func (app *App) runCopyCommand(args []string) int {
 		return 1
 	}
 
-	fmt.Fprintln(
-		app.Writer,
-		"Copy completed successfully.",
-	)
+	fmt.Fprintln(app.Writer,"Copy completed successfully.")
 
-	app.Logger.Printf(
-		"Copied %s to %s",
-		sourcePath,
-		destinationPath,
-	)
+	app.Logger.Printf("Copied %s to %s",sourcePath,destinationPath)
 
 	return 0
 }

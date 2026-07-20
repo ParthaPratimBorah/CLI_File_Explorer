@@ -13,10 +13,7 @@ import (
 func (app *App) runMoveCommand(args []string) int {
 	var overwrite bool
 
-	flagSet := flag.NewFlagSet(
-		"move",
-		flag.ContinueOnError,
-	)
+	flagSet := flag.NewFlagSet("move",flag.ContinueOnError)
 
 	flagSet.SetOutput(io.Discard)
 
@@ -65,25 +62,15 @@ func (app *App) runMoveCommand(args []string) int {
 		return 1
 	}
 
-	finalDestination := fileops.PrepareDestination(
-		sourcePath,
-		destinationPath,
-		sourceInfo.IsDir(),
-	)
+	finalDestination := fileops.PrepareDestination(sourcePath,destinationPath,sourceInfo.IsDir())
 
 	if fileops.PathExists(finalDestination) && !overwrite {
 		confirmed := askForConfirmation(
-			fmt.Sprintf(
-				"%s already exists. Overwrite it?",
-				finalDestination,
-			),
+			fmt.Sprintf("%s already exists. Overwrite it?",finalDestination),
 		)
 
 		if !confirmed {
-			fmt.Fprintln(
-				app.Writer,
-				"Move cancelled.",
-			)
+			fmt.Fprintln(app.Writer,"Move cancelled.")
 
 			return 0
 		}
@@ -91,11 +78,7 @@ func (app *App) runMoveCommand(args []string) int {
 		overwrite = true
 	}
 
-	err = fileops.Move(
-		sourcePath,
-		destinationPath,
-		overwrite,
-	)
+	err = fileops.Move(sourcePath, destinationPath, overwrite)
 
 	if err != nil {
 		fmt.Fprintln(app.Writer, "Error:", err)
@@ -104,16 +87,9 @@ func (app *App) runMoveCommand(args []string) int {
 		return 1
 	}
 
-	fmt.Fprintln(
-		app.Writer,
-		"Move completed successfully.",
-	)
+	fmt.Fprintln(app.Writer,"Move completed successfully.")
 
-	app.Logger.Printf(
-		"Moved %s to %s",
-		sourcePath,
-		destinationPath,
-	)
+	app.Logger.Printf("Moved %s to %s", sourcePath, destinationPath)
 
 	return 0
 }

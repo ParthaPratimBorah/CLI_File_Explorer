@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// askForConfirmation asks the user to enter y or n.
+//asks the user to enter y or n.
 func askForConfirmation(message string) bool {
 	var answer string
 

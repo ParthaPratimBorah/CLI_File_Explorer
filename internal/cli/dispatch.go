@@ -26,8 +26,10 @@ func (app *App) dispatch(command string, args []string) int {
 	case "info":
 		return app.runInfoCommand(args)
 
+	case "duplicate":
+		return app.runDuplicateCommand(args)
+
 	case "compare",
-		"duplicate",
 		"stats",
 		"export",
 		"hash",

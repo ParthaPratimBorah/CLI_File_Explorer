@@ -122,11 +122,7 @@ func (app *App) setupLogger(filename string) error {
 
 	app.logFile = file
 
-	app.Logger = log.New(
-		file,
-		"FILE-EXPLORER: ",
-		log.Ldate|log.Ltime,
-	)
+	app.Logger = log.New(file, "FILE-EXPLORER: ", log.Ldate|log.Ltime)
 
 	return nil
 }

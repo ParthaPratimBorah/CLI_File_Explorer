@@ -131,7 +131,7 @@ func BatchRename(
 		compiledRegex, err = regexp.Compile(options.RegexPattern)
 
 		if err != nil {
-			return results, fmt.Errorf("invalid rename regular expression: %w",err)
+			return results, fmt.Errorf("invalid rename regular expression: %w", err)
 		}
 	}
 

@@ -10,14 +10,14 @@ import (
 
 // handles the info command.
 func (app *App) runInfoCommand(args []string) int {
-	flagSet := flag.NewFlagSet("info",flag.ContinueOnError)
+	flagSet := flag.NewFlagSet("info", flag.ContinueOnError)
 
 	flagSet.SetOutput(io.Discard)
 
 	err := flagSet.Parse(args)
 
 	if err != nil {
-		fmt.Fprintln(app.Writer,"Error: invalid info flags:",err)
+		fmt.Fprintln(app.Writer, "Error: invalid info flags:", err)
 
 		return 1
 	}
@@ -25,7 +25,7 @@ func (app *App) runInfoCommand(args []string) int {
 	remainingArguments := flagSet.Args()
 
 	if len(remainingArguments) != 1 {
-		fmt.Fprintln(app.Writer,"Usage: explorer info <path>")
+		fmt.Fprintln(app.Writer, "Usage: explorer info <path>")
 
 		return 1
 	}

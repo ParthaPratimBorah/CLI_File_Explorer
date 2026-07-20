@@ -19,22 +19,13 @@ func formatSize(size int64) string {
 
 	switch {
 	case size >= gigabyte:
-		return fmt.Sprintf(
-			"%.2f GB",
-			float64(size)/float64(gigabyte),
-		)
+		return fmt.Sprintf("%.2f GB",float64(size)/float64(gigabyte))
 
 	case size >= megabyte:
-		return fmt.Sprintf(
-			"%.2f MB",
-			float64(size)/float64(megabyte),
-		)
+		return fmt.Sprintf("%.2f MB",float64(size)/float64(megabyte))
 
 	case size >= kilobyte:
-		return fmt.Sprintf(
-			"%.2f KB",
-			float64(size)/float64(kilobyte),
-		)
+		return fmt.Sprintf("%.2f KB",float64(size)/float64(kilobyte))
 
 	default:
 		return fmt.Sprintf("%d B", size)
@@ -76,16 +67,23 @@ func calculateChecksum(path string) (string, error) {
 	file, err := os.Open(path)
 
 	if err != nil {
-		return "", fmt.Errorf("could not open file for checksum: %w", err)
+		return "", fmt.Errorf(
+			"could not open file for checksum: %w",
+			err,
+		)
 	}
 
-	defer file.Close
+	defer file.Close()
+
 	hash := sha256.New()
 
 	_, err = io.Copy(hash, file)
 
 	if err != nil {
-		return "", fmt.Errorf("could not calculate checksum: %w",err)
+		return "", fmt.Errorf(
+			"could not calculate checksum: %w",
+			err,
+		)
 	}
 
 	return fmt.Sprintf("%x", hash.Sum(nil)), nil

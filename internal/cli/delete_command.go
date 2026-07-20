@@ -38,11 +38,7 @@ func (app *App) runDeleteCommand(args []string) int {
 	err := flagSet.Parse(args)
 
 	if err != nil {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: invalid delete flags:",
-			err,
-		)
+		fmt.Fprintln(app.Writer,"Error: invalid delete flags:",err)
 
 		return 1
 	}
@@ -50,10 +46,7 @@ func (app *App) runDeleteCommand(args []string) int {
 	remainingArguments := flagSet.Args()
 
 	if len(remainingArguments) != 1 {
-		fmt.Fprintln(
-			app.Writer,
-			"Usage: explorer delete [flags] <path>",
-		)
+		fmt.Fprintln(app.Writer,"Usage: explorer delete [flags] <path>")
 
 		return 1
 	}
@@ -63,44 +56,28 @@ func (app *App) runDeleteCommand(args []string) int {
 	fileInfo, err := os.Stat(targetPath)
 
 	if err != nil {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: could not access path:",
-			err,
-		)
+		fmt.Fprintln(app.Writer,"Error: could not access path:",err)
 
 		return 1
 	}
 
 	if fileInfo.IsDir() && !recursive {
-		fmt.Fprintln(
-			app.Writer,
-			"Note: a non-empty directory requires --recursive.",
-		)
+		fmt.Fprintln(app.Writer,"Note: a non-empty directory requires --recursive.")
 	}
 
 	if !force {
-		message := fmt.Sprintf(
-			"Are you sure you want to delete %s?",
-			targetPath,
-		)
+		message := fmt.Sprintf("Are you sure you want to delete %s?",targetPath)
 
 		confirmed := askForConfirmation(message)
 
 		if !confirmed {
-			fmt.Fprintln(
-				app.Writer,
-				"Delete cancelled.",
-			)
+			fmt.Fprintln(app.Writer,"Delete cancelled.")
 
 			return 0
 		}
 	}
 
-	err = fileops.Delete(
-		targetPath,
-		recursive,
-	)
+	err = fileops.Delete(targetPath,recursive)
 
 	if err != nil {
 		fmt.Fprintln(app.Writer, "Error:", err)
@@ -109,10 +86,7 @@ func (app *App) runDeleteCommand(args []string) int {
 		return 1
 	}
 
-	fmt.Fprintln(
-		app.Writer,
-		"Delete completed successfully.",
-	)
+	fmt.Fprintln(app.Writer,"Delete completed successfully.")
 
 	app.Logger.Println("Deleted:", targetPath)
 

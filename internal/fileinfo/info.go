@@ -32,20 +32,20 @@ func GetInfo(path string) (Result, error) {
 	createdTime, createdKnown := getCreatedTime(fileInfo)
 
 	result = Result{
-		FileName: fileInfo.Name(),
-		Extension: filepath.Ext(fileInfo.Name()),
+		FileName:     fileInfo.Name(),
+		Extension:    filepath.Ext(fileInfo.Name()),
 		AbsolutePath: absolutePath,
 		RelativePath: getRelativePath(absolutePath),
-		Directory: filepath.Dir(absolutePath),
-		Size: fileInfo.Size(),
+		Directory:    filepath.Dir(absolutePath),
+		Size:         fileInfo.Size(),
 		ReadableSize: formatSize(fileInfo.Size()),
-		Permissions: fileInfo.Mode().Perm().String(),
-		CreatedTime: createdTime,
+		Permissions:  fileInfo.Mode().Perm().String(),
+		CreatedTime:  createdTime,
 		CreatedKnown: createdKnown,
 		ModifiedTime: fileInfo.ModTime(),
-		FileType: getFileType(fileInfo),
-		Hidden: isHidden(fileInfo.Name()),
-		Checksum: "Not available",
+		FileType:     getFileType(fileInfo),
+		Hidden:       isHidden(fileInfo.Name()),
+		Checksum:     "Not available",
 	}
 
 	// Only calculate checksums for regular files.

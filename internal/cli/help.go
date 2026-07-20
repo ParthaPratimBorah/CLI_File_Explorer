@@ -77,4 +77,10 @@ func (app *App) showHelp() {
 	fmt.Fprintln(app.Writer, "Delete Flags:")
 	fmt.Fprintln(app.Writer, "  --recursive     Delete a directory and its contents")
 	fmt.Fprintln(app.Writer, "  --force         Delete without confirmation")
+	fmt.Fprintln(app.Writer)
+
+	fmt.Fprintln(app.Writer, "Duplicate Flags:")
+	fmt.Fprintln(app.Writer, "  --algorithm NAME  Use sha256 or crc32")
+	fmt.Fprintln(app.Writer, "  --recursive       Search inside subdirectories")
+	fmt.Fprintln(app.Writer, "  --hidden          Include hidden files")
 }

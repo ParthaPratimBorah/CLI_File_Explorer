@@ -2,7 +2,7 @@ package fileinfo
 
 import "time"
 
-//stores information about one file or directory
+// stores information about one file or directory
 type Result struct {
 	FileName     string
 	Extension    string
