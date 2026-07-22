@@ -9,7 +9,7 @@ import (
 	"file-explorer/internal/fileops"
 )
 
-// runMoveCommand handles the move command.
+//handles the move command.
 func (app *App) runMoveCommand(args []string) int {
 	var overwrite bool
 
@@ -17,21 +17,12 @@ func (app *App) runMoveCommand(args []string) int {
 
 	flagSet.SetOutput(io.Discard)
 
-	flagSet.BoolVar(
-		&overwrite,
-		"overwrite",
-		false,
-		"overwrite an existing destination",
-	)
+	flagSet.BoolVar( &overwrite, "overwrite", false, "overwrite an existing destination")
 
 	err := flagSet.Parse(args)
 
 	if err != nil {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: invalid move flags:",
-			err,
-		)
+		fmt.Fprintln( app.Writer, "Error: invalid move flags:", err)
 
 		return 1
 	}
@@ -39,10 +30,7 @@ func (app *App) runMoveCommand(args []string) int {
 	remainingArguments := flagSet.Args()
 
 	if len(remainingArguments) != 2 {
-		fmt.Fprintln(
-			app.Writer,
-			"Usage: explorer move [flags] <source> <destination>",
-		)
+		fmt.Fprintln( app.Writer, "Usage: explorer move [flags] <source> <destination>")
 
 		return 1
 	}
@@ -53,11 +41,7 @@ func (app *App) runMoveCommand(args []string) int {
 	sourceInfo, err := os.Stat(sourcePath)
 
 	if err != nil {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: could not access source:",
-			err,
-		)
+		fmt.Fprintln( app.Writer, "Error: could not access source:", err)
 
 		return 1
 	}

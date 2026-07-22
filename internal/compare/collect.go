@@ -16,18 +16,11 @@ func collectFiles(
 	rootInfo, err := os.Stat(rootPath)
 
 	if err != nil {
-		return files, fmt.Errorf(
-			"could not access directory %s: %w",
-			rootPath,
-			err,
-		)
+		return files, fmt.Errorf( "could not access directory %s: %w", rootPath, err )
 	}
 
 	if !rootInfo.IsDir() {
-		return files, fmt.Errorf(
-			"%s is not a directory",
-			rootPath,
-		)
+		return files, fmt.Errorf( "%s is not a directory", rootPath )
 	}
 
 	err = collectFromDirectory(
@@ -44,7 +37,7 @@ func collectFiles(
 	return files, nil
 }
 
-// collectFromDirectory reads one directory.
+//reads one directory.
 func collectFromDirectory(
 	rootPath string,
 	currentPath string,
@@ -54,11 +47,7 @@ func collectFromDirectory(
 	entries, err := os.ReadDir(currentPath)
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not read directory %s: %w",
-			currentPath,
-			err,
-		)
+		return fmt.Errorf( "could not read directory %s: %w", currentPath, err )
 	}
 
 	for _, entry := range entries {
@@ -93,51 +82,31 @@ func collectFromDirectory(
 		fileInfo, err := entry.Info()
 
 		if err != nil {
-			return fmt.Errorf(
-				"could not read file information for %s: %w",
-				fullPath,
-				err,
-			)
+			return fmt.Errorf( "could not read file information for %s: %w", fullPath, err )
 		}
 
-		// Ignore symbolic links and special files.
+		// Ignore symbolic links and special files
 		if !fileInfo.Mode().IsRegular() {
 			continue
 		}
 
-		relativePath, err := filepath.Rel(
-			rootPath,
-			fullPath,
-		)
+		relativePath, err := filepath.Rel( rootPath, fullPath )
 
 		if err != nil {
-			return fmt.Errorf(
-				"could not create relative path for %s: %w",
-				fullPath,
-				err,
-			)
+			return fmt.Errorf( "could not create relative path for %s: %w", fullPath, err )
 		}
 
-		relativePath = normalizeRelativePath(
-			relativePath,
-		)
-
-		absolutePath, err := filepath.Abs(
-			fullPath,
-		)
+		relativePath = normalizeRelativePath(relativePath)
+		absolutePath, err := filepath.Abs(fullPath)
 
 		if err != nil {
-			return fmt.Errorf(
-				"could not create absolute path for %s: %w",
-				fullPath,
-				err,
-			)
+			return fmt.Errorf( "could not create absolute path for %s: %w", fullPath, err)
 		}
 
 		files[relativePath] = FileDetails{
 			RelativePath: relativePath,
 			AbsolutePath: absolutePath,
-			Size:         fileInfo.Size(),
+			Size: fileInfo.Size(),
 		}
 	}
 

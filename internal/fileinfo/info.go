@@ -6,27 +6,20 @@ import (
 	"path/filepath"
 )
 
-// GetInfo reads information about a file or directory.
+//reads information about a file or directory
 func GetInfo(path string) (Result, error) {
 	var result Result
 
 	fileInfo, err := os.Stat(path)
 
 	if err != nil {
-		return result, fmt.Errorf(
-			"could not access %s: %w",
-			path,
-			err,
-		)
+		return result, fmt.Errorf( "could not access %s: %w", path, err )
 	}
 
 	absolutePath, err := filepath.Abs(path)
 
 	if err != nil {
-		return result, fmt.Errorf(
-			"could not create absolute path: %w",
-			err,
-		)
+		return result, fmt.Errorf( "could not create absolute path: %w", err )
 	}
 
 	createdTime, createdKnown := getCreatedTime(fileInfo)

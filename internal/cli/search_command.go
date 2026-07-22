@@ -8,7 +8,7 @@ import (
 	searchpackage "file-explorer/internal/search"
 )
 
-// runSearchCommand handles the search command.
+//handles the search command
 func (app *App) runSearchCommand(args []string) int {
 	var exact bool
 	var ignoreCase bool
@@ -22,63 +22,18 @@ func (app *App) runSearchCommand(args []string) int {
 
 	flagSet.SetOutput(io.Discard)
 
-	flagSet.BoolVar(
-		&exact,
-		"exact",
-		false,
-		"search exact names",
-	)
-
-	flagSet.BoolVar(
-		&ignoreCase,
-		"ignore-case",
-		false,
-		"ignore uppercase and lowercase",
-	)
-
-	flagSet.BoolVar(
-		&useRegex,
-		"regex",
-		false,
-		"use regular expression",
-	)
-
-	flagSet.BoolVar(
-		&extension,
-		"extension",
-		false,
-		"search by extension",
-	)
-
-	flagSet.BoolVar(
-		&recursive,
-		"recursive",
-		true,
-		"search subdirectories",
-	)
-
-	flagSet.BoolVar(
-		&filesOnly,
-		"files-only",
-		false,
-		"show only files",
-	)
-
-	flagSet.BoolVar(
-		&directoriesOnly,
-		"dirs-only",
-		false,
-		"show only directories",
-	)
+	flagSet.BoolVar( &exact, "exact", false, "search exact names" )
+	flagSet.BoolVar( &ignoreCase, "ignore-case", false, "ignore uppercase and lowercase" )
+	flagSet.BoolVar( &useRegex, "regex", false, "use regular expression" )
+	flagSet.BoolVar( &extension, "extension", false, "search by extension" )
+	flagSet.BoolVar( &recursive, "recursive", true, "search subdirectories" )
+	flagSet.BoolVar( &filesOnly, "files-only", false, "show only files" )
+	flagSet.BoolVar( &directoriesOnly, "dirs-only", false, "show only directories" )
 
 	err := flagSet.Parse(args)
 
 	if err != nil {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: invalid search command flags:",
-			err,
-		)
+		fmt.Fprintln( app.Writer, "Error: invalid search command flags:", err)
 
 		return 1
 	}
@@ -87,24 +42,15 @@ func (app *App) runSearchCommand(args []string) int {
 
 	// At least one argument is required for the search pattern.
 	if len(remainingArguments) == 0 {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: search pattern is required",
-		)
+		fmt.Fprintln( app.Writer, "Error: search pattern is required")
 
-		fmt.Fprintln(
-			app.Writer,
-			"Usage: explorer search [flags] <pattern> [path]",
-		)
+		fmt.Fprintln( app.Writer, "Usage: explorer search [flags] <pattern> [path]" )
 
 		return 1
 	}
 
 	if filesOnly && directoriesOnly {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: --files-only and --dirs-only cannot be used together",
-		)
+		fmt.Fprintln( app.Writer, "Error: --files-only and --dirs-only cannot be used together" )
 
 		return 1
 	}
@@ -119,15 +65,15 @@ func (app *App) runSearchCommand(args []string) int {
 	}
 
 	options := searchpackage.Options{
-		Pattern:    searchPattern,
-		RootPath:   rootPath,
-		Exact:      exact,
+		Pattern: searchPattern,
+		RootPath: rootPath,
+		Exact: exact,
 		IgnoreCase: ignoreCase,
-		UseRegex:   useRegex,
-		Extension:  extension,
-		Recursive:  recursive,
-		FilesOnly:  filesOnly,
-		DirsOnly:   directoriesOnly,
+		UseRegex: useRegex,
+		Extension: extension,
+		Recursive: recursive,
+		FilesOnly: filesOnly,
+		DirsOnly: directoriesOnly,
 	}
 
 	if app.Verbose {
@@ -156,17 +102,9 @@ func (app *App) runSearchCommand(args []string) int {
 
 	for _, result := range results {
 		if result.IsDirectory {
-			fmt.Fprintf(
-				app.Writer,
-				"[DIR]  %s\n",
-				result.Path,
-			)
+			fmt.Fprintf( app.Writer, "[DIR]  %s\n", result.Path )
 		} else {
-			fmt.Fprintf(
-				app.Writer,
-				"[FILE] %s\n",
-				result.Path,
-			)
+			fmt.Fprintf( app.Writer, "[FILE] %s\n", result.Path )
 		}
 	}
 

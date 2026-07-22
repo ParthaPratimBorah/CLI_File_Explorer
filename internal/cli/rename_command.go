@@ -10,7 +10,7 @@ import (
 	"file-explorer/internal/fileops"
 )
 
-// runRenameCommand handles the rename command.
+//handles the rename command
 func (app *App) runRenameCommand(args []string) int {
 	var newName string
 	var batch bool
@@ -22,84 +22,24 @@ func (app *App) runRenameCommand(args []string) int {
 	var overwrite bool
 	var force bool
 
-	flagSet := flag.NewFlagSet(
-		"rename",
-		flag.ContinueOnError,
-	)
+	flagSet := flag.NewFlagSet( "rename", flag.ContinueOnError)
 
 	flagSet.SetOutput(io.Discard)
 
-	flagSet.StringVar(
-		&newName,
-		"new-name",
-		"",
-		"new name for one item",
-	)
-
-	flagSet.BoolVar(
-		&batch,
-		"batch",
-		false,
-		"rename multiple items",
-	)
-
-	flagSet.StringVar(
-		&prefix,
-		"prefix",
-		"",
-		"add text before names",
-	)
-
-	flagSet.StringVar(
-		&suffix,
-		"suffix",
-		"",
-		"add text after names",
-	)
-
-	flagSet.StringVar(
-		&replaceText,
-		"replace",
-		"",
-		"text to replace",
-	)
-
-	flagSet.StringVar(
-		&replacement,
-		"with",
-		"",
-		"replacement text",
-	)
-
-	flagSet.StringVar(
-		&regexPattern,
-		"regex",
-		"",
-		"regular expression pattern",
-	)
-
-	flagSet.BoolVar(
-		&overwrite,
-		"overwrite",
-		false,
-		"overwrite an existing item during single rename",
-	)
-
-	flagSet.BoolVar(
-		&force,
-		"force",
-		false,
-		"skip confirmation",
-	)
+	flagSet.StringVar( &newName, "new-name", "", "new name for one item" )
+	flagSet.BoolVar( &batch, "batch", false, "rename multiple items")
+	flagSet.StringVar( &prefix, "prefix", "", "add text before names")
+	flagSet.StringVar( &suffix, "suffix", "", "add text after names")
+	flagSet.StringVar( &replaceText, "replace", "", "text to replace")
+	flagSet.StringVar( &replacement, "with", "", "replacement text")
+	flagSet.StringVar( &regexPattern, "regex", "", "regular expression pattern")
+	flagSet.BoolVar( &overwrite, "overwrite", false, "overwrite an existing item during single rename")
+	flagSet.BoolVar( &force, "force", false, "skip confirmation")
 
 	err := flagSet.Parse(args)
 
 	if err != nil {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: invalid rename flags:",
-			err,
-		)
+		fmt.Fprintln( app.Writer, "Error: invalid rename flags:", err)
 
 		return 1
 	}
@@ -118,33 +58,23 @@ func (app *App) runRenameCommand(args []string) int {
 		)
 	}
 
-	return app.runSingleRename(
-		remainingArguments,
-		newName,
-		overwrite,
-	)
+	return app.runSingleRename( remainingArguments, newName, overwrite)
 }
 
-// runSingleRename renames one file or directory.
+// renames one file or directory.
 func (app *App) runSingleRename(
 	args []string,
 	newName string,
 	overwrite bool,
 ) int {
 	if len(args) != 1 {
-		fmt.Fprintln(
-			app.Writer,
-			"Usage: explorer rename --new-name <name> <path>",
-		)
+		fmt.Fprintln( app.Writer, "Usage: explorer rename --new-name <name> <path>")
 
 		return 1
 	}
 
 	if newName == "" {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: --new-name is required",
-		)
+		fmt.Fprintln( app.Writer, "Error: --new-name is required")
 
 		return 1
 	}
@@ -154,33 +84,19 @@ func (app *App) runSingleRename(
 	_, err := os.Stat(sourcePath)
 
 	if err != nil {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: could not access source:",
-			err,
-		)
+		fmt.Fprintln( app.Writer, "Error: could not access source:", err)
 
 		return 1
 	}
 
-	destinationPath := filepath.Join(
-		filepath.Dir(sourcePath),
-		newName,
-	)
+	destinationPath := filepath.Join(filepath.Dir(sourcePath), newName)
 
 	if fileops.PathExists(destinationPath) && !overwrite {
 		confirmed := askForConfirmation(
-			fmt.Sprintf(
-				"%s already exists. Overwrite it?",
-				destinationPath,
-			),
-		)
+			fmt.Sprintf("%s already exists. Overwrite it?", destinationPath,))
 
 		if !confirmed {
-			fmt.Fprintln(
-				app.Writer,
-				"Rename cancelled.",
-			)
+			fmt.Fprintln(app.Writer,"Rename cancelled.",)
 
 			return 0
 		}
@@ -201,21 +117,14 @@ func (app *App) runSingleRename(
 		return 1
 	}
 
-	fmt.Fprintln(
-		app.Writer,
-		"Rename completed successfully.",
-	)
+	fmt.Fprintln( app.Writer, "Rename completed successfully." )
 
-	app.Logger.Printf(
-		"Renamed %s to %s",
-		sourcePath,
-		newName,
-	)
+	app.Logger.Printf( "Renamed %s to %s", sourcePath, newName )
 
 	return 0
 }
 
-// runBatchRename renames all items inside a directory.
+// renames all items inside a directory
 func (app *App) runBatchRename(
 	args []string,
 	prefix string,
@@ -226,10 +135,7 @@ func (app *App) runBatchRename(
 	force bool,
 ) int {
 	if len(args) != 1 {
-		fmt.Fprintln(
-			app.Writer,
-			"Usage: explorer rename --batch [flags] <directory>",
-		)
+		fmt.Fprintln( app.Writer, "Usage: explorer rename --batch [flags] <directory>" )
 
 		return 1
 	}
@@ -238,17 +144,10 @@ func (app *App) runBatchRename(
 
 	if !force {
 		confirmed := askForConfirmation(
-			fmt.Sprintf(
-				"Rename items inside %s?",
-				directoryPath,
-			),
-		)
+			fmt.Sprintf( "Rename items inside %s?", directoryPath ))
 
 		if !confirmed {
-			fmt.Fprintln(
-				app.Writer,
-				"Batch rename cancelled.",
-			)
+			fmt.Fprintln( app.Writer, "Batch rename cancelled.")
 
 			return 0
 		}
@@ -262,10 +161,7 @@ func (app *App) runBatchRename(
 		RegexPattern: regexPattern,
 	}
 
-	results, err := fileops.BatchRename(
-		directoryPath,
-		options,
-	)
+	results, err := fileops.BatchRename( directoryPath, options )
 
 	if err != nil {
 		fmt.Fprintln(app.Writer, "Error:", err)
@@ -275,28 +171,16 @@ func (app *App) runBatchRename(
 	}
 
 	if len(results) == 0 {
-		fmt.Fprintln(
-			app.Writer,
-			"No names were changed.",
-		)
+		fmt.Fprintln( app.Writer, "No names were changed.")
 
 		return 0
 	}
 
 	for _, result := range results {
-		fmt.Fprintf(
-			app.Writer,
-			"Renamed: %s -> %s\n",
-			filepath.Base(result.OldPath),
-			filepath.Base(result.NewPath),
-		)
+		fmt.Fprintf( app.Writer, "Renamed: %s -> %s\n",filepath. Base(result.OldPath),filepath. Base(result.NewPath) )
 	}
 
-	fmt.Fprintf(
-		app.Writer,
-		"Total renamed: %d\n",
-		len(results),
-	)
+	fmt.Fprintf(app.Writer,"Total renamed: %d\n",len(results))
 
 	return 0
 }

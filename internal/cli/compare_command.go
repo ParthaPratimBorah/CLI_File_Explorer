@@ -61,9 +61,9 @@ func (app *App) runCompareCommand(args []string) int {
 	secondPath := remainingArguments[1]
 
 	options := comparepackage.Options{
-		FirstPath:  firstPath,
+		FirstPath: firstPath,
 		SecondPath: secondPath,
-		Recursive:  recursive,
+		Recursive: recursive,
 		ShowHidden: showHidden,
 	}
 
@@ -106,7 +106,7 @@ func (app *App) runCompareCommand(args []string) int {
 	return 0
 }
 
-// printComparisonResult displays the comparison report.
+//displays the comparison
 func (app *App) printComparisonResult(
 	result comparepackage.Result,
 ) {
@@ -115,10 +115,6 @@ func (app *App) printComparisonResult(
 		"Directory Comparison Report",
 	)
 
-	fmt.Fprintln(
-		app.Writer,
-		"===========================",
-	)
 
 	fmt.Fprintln(app.Writer)
 
@@ -136,11 +132,7 @@ func (app *App) printComparisonResult(
 	fmt.Fprintln(app.Writer)
 
 	if totalDifferences == 0 {
-		fmt.Fprintln(
-			app.Writer,
-			"The directories contain matching files.",
-		)
-
+		fmt.Fprintln(app.Writer, "The directories contain matching files.")
 		return
 	}
 
@@ -163,12 +155,11 @@ func (app *App) printComparisonResult(
 	)
 }
 
-// printMissingFiles displays missing files.
+//displays missing files.
 func (app *App) printMissingFiles(
 	files []comparepackage.FileDetails,
 ) {
 	fmt.Fprintln(app.Writer, "Missing Files")
-	fmt.Fprintln(app.Writer, "-------------")
 
 	if len(files) == 0 {
 		fmt.Fprintln(app.Writer, "None")
@@ -187,12 +178,11 @@ func (app *App) printMissingFiles(
 	fmt.Fprintln(app.Writer)
 }
 
-// printExtraFiles displays extra files.
+//displays extra files.
 func (app *App) printExtraFiles(
 	files []comparepackage.FileDetails,
 ) {
 	fmt.Fprintln(app.Writer, "Extra Files")
-	fmt.Fprintln(app.Writer, "-----------")
 
 	if len(files) == 0 {
 		fmt.Fprintln(app.Writer, "None")
@@ -211,10 +201,9 @@ func (app *App) printExtraFiles(
 	fmt.Fprintln(app.Writer)
 }
 
-// printModifiedFiles displays modified files.
+//displays modified files
 func (app *App) printModifiedFiles(files []string) {
 	fmt.Fprintln(app.Writer, "Modified Files")
-	fmt.Fprintln(app.Writer, "--------------")
 
 	if len(files) == 0 {
 		fmt.Fprintln(app.Writer, "None")
@@ -233,12 +222,11 @@ func (app *App) printModifiedFiles(files []string) {
 	fmt.Fprintln(app.Writer)
 }
 
-// printSizeDifferences displays size changes.
+//displays size changes
 func (app *App) printSizeDifferences(
 	differences []comparepackage.SizeDifference,
 ) {
 	fmt.Fprintln(app.Writer, "Different Sizes")
-	fmt.Fprintln(app.Writer, "---------------")
 
 	if len(differences) == 0 {
 		fmt.Fprintln(app.Writer, "None")
@@ -247,40 +235,31 @@ func (app *App) printSizeDifferences(
 	}
 
 	for _, difference := range differences {
-		fmt.Fprintf(
-			app.Writer,
-			"- %s\n",
-			difference.RelativePath,
-		)
+		fmt.Fprintf(app.Writer, "- %s\n",difference.RelativePath)
 
 		fmt.Fprintf(
 			app.Writer,
 			"  First:  %d bytes (%s)\n",
 			difference.FirstSize,
-			comparepackage.FormatSize(
-				difference.FirstSize,
-			),
+			comparepackage.FormatSize(difference.FirstSize),
 		)
 
 		fmt.Fprintf(
 			app.Writer,
 			"  Second: %d bytes (%s)\n",
 			difference.SecondSize,
-			comparepackage.FormatSize(
-				difference.SecondSize,
-			),
+			comparepackage.FormatSize(difference.SecondSize),
 		)
 	}
 
 	fmt.Fprintln(app.Writer)
 }
 
-// printHashDifferences displays hash changes.
+// displays hash changes
 func (app *App) printHashDifferences(
 	differences []comparepackage.HashDifference,
 ) {
 	fmt.Fprintln(app.Writer, "Different Hashes")
-	fmt.Fprintln(app.Writer, "----------------")
 
 	if len(differences) == 0 {
 		fmt.Fprintln(app.Writer, "None")
@@ -295,17 +274,8 @@ func (app *App) printHashDifferences(
 			difference.RelativePath,
 		)
 
-		fmt.Fprintf(
-			app.Writer,
-			"  First SHA256:  %s\n",
-			difference.FirstHash,
-		)
-
-		fmt.Fprintf(
-			app.Writer,
-			"  Second SHA256: %s\n",
-			difference.SecondHash,
-		)
+		fmt.Fprintf(app.Writer, "  First SHA256:  %s\n", difference.FirstHash)
+		fmt.Fprintf(app.Writer, "  Second SHA256: %s\n", difference.SecondHash)
 	}
 
 	fmt.Fprintln(app.Writer)

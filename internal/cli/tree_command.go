@@ -19,35 +19,14 @@ func (app *App) runTreeCommand(args []string) int {
 	// Hide the default flag package output.
 	flagSet.SetOutput(io.Discard)
 
-	flagSet.IntVar(
-		&maxDepth,
-		"depth",
-		0,
-		"maximum tree depth",
-	)
-
-	flagSet.BoolVar(
-		&showHidden,
-		"hidden",
-		false,
-		"show hidden files",
-	)
-
-	flagSet.BoolVar(
-		&showSize,
-		"size",
-		false,
-		"show file sizes",
-	)
+	flagSet.IntVar(&maxDepth,"depth",0,"maximum tree depth",)
+	flagSet.BoolVar(&showHidden,"hidden",false,"show hidden files",)
+	flagSet.BoolVar(&showSize,"size",false,"show file sizes",)
 
 	err := flagSet.Parse(args)
 
 	if err != nil {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: invalid tree command flags:",
-			err,
-		)
+		fmt.Fprintln(app.Writer,"Error: invalid tree command flags:",err,)
 
 		return 1
 	}
@@ -62,10 +41,7 @@ func (app *App) runTreeCommand(args []string) int {
 	}
 
 	if maxDepth < 0 {
-		fmt.Fprintln(
-			app.Writer,
-			"Error: depth cannot be negative",
-		)
+		fmt.Fprintln(app.Writer,"Error: depth cannot be negative",)
 
 		return 1
 	}
@@ -96,17 +72,8 @@ func (app *App) runTreeCommand(args []string) int {
 
 	fmt.Fprintln(app.Writer)
 
-	fmt.Fprintf(
-		app.Writer,
-		"Directories: %d\n",
-		result.DirectoryCount,
-	)
-
-	fmt.Fprintf(
-		app.Writer,
-		"Files: %d\n",
-		result.FileCount,
-	)
+	fmt.Fprintf(app.Writer,"Directories: %d\n",result.DirectoryCount,)
+	fmt.Fprintf(app.Writer,"Files: %d\n",result.FileCount,)
 
 	return 0
 }

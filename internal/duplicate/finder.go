@@ -114,30 +114,19 @@ func collectFiles(options Options) ([]string, error) {
 	rootInfo, err := os.Stat(options.RootPath)
 
 	if err != nil {
-		return filePaths, fmt.Errorf(
-			"could not access path %s: %w",
-			options.RootPath,
-			err,
-		)
+		return filePaths, fmt.Errorf( "could not access path %s: %w", options.RootPath, err )
 	}
 
 	// If the root is one file, add only that file.
 	if !rootInfo.IsDir() {
 		if rootInfo.Mode().IsRegular() {
-			filePaths = append(
-				filePaths,
-				options.RootPath,
-			)
+			filePaths = append( filePaths, options.RootPath )
 		}
 
 		return filePaths, nil
 	}
 
-	err = collectFromDirectory(
-		options.RootPath,
-		options,
-		&filePaths,
-	)
+	err = collectFromDirectory( options.RootPath, options, &filePaths )
 
 	if err != nil {
 		return filePaths, err
@@ -155,11 +144,7 @@ func collectFromDirectory(
 	entries, err := os.ReadDir(directoryPath)
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not read directory %s: %w",
-			directoryPath,
-			err,
-		)
+		return fmt.Errorf( "could not read directory %s: %w", directoryPath, err )
 	}
 
 	for _, entry := range entries {
@@ -169,28 +154,17 @@ func collectFromDirectory(
 			continue
 		}
 
-		fullPath := filepath.Join(
-			directoryPath,
-			entry.Name(),
-		)
+		fullPath := filepath.Join( directoryPath, entry.Name() )
 
 		fileInfo, err := entry.Info()
 
 		if err != nil {
-			return fmt.Errorf(
-				"could not read file information for %s: %w",
-				fullPath,
-				err,
-			)
+			return fmt.Errorf( "could not read file information for %s: %w", fullPath, err )
 		}
 
 		if entry.IsDir() {
 			if options.Recursive {
-				err = collectFromDirectory(
-					fullPath,
-					options,
-					filePaths,
-				)
+				err = collectFromDirectory( fullPath, options, filePaths )
 
 				if err != nil {
 					return err
@@ -200,12 +174,9 @@ func collectFromDirectory(
 			continue
 		}
 
-		// Ignore symbolic links, sockets and other special items.
+		// Ignore symbolic links and other special items
 		if fileInfo.Mode().IsRegular() {
-			*filePaths = append(
-				*filePaths,
-				fullPath,
-			)
+			*filePaths = append( *filePaths, fullPath )
 		}
 	}
 
@@ -222,19 +193,12 @@ func groupFilesBySize(
 		fileInfo, err := os.Stat(filePath)
 
 		if err != nil {
-			return filesBySize, fmt.Errorf(
-				"could not read file information for %s: %w",
-				filePath,
-				err,
-			)
+			return filesBySize, fmt.Errorf("could not read file information for %s: %w", filePath, err)
 		}
 
 		fileSize := fileInfo.Size()
 
-		filesBySize[fileSize] = append(
-			filesBySize[fileSize],
-			filePath,
-		)
+		filesBySize[fileSize] = append( filesBySize[fileSize], filePath )
 	}
 
 	return filesBySize, nil

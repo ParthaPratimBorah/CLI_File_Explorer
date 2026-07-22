@@ -22,22 +22,13 @@ func formatSize(size int64) string {
 
 	switch {
 	case size >= gigabyte:
-		return fmt.Sprintf(
-			"%.2f GB",
-			float64(size)/float64(gigabyte),
-		)
+		return fmt.Sprintf( "%.2f GB", float64(size)/float64(gigabyte))
 
 	case size >= megabyte:
-		return fmt.Sprintf(
-			"%.2f MB",
-			float64(size)/float64(megabyte),
-		)
+		return fmt.Sprintf( "%.2f MB", float64(size)/float64(megabyte))
 
 	case size >= kilobyte:
-		return fmt.Sprintf(
-			"%.2f KB",
-			float64(size)/float64(kilobyte),
-		)
+		return fmt.Sprintf( "%.2f KB", float64(size)/float64(kilobyte) )
 
 	default:
 		return fmt.Sprintf("%d B", size)
@@ -55,13 +46,12 @@ func sortFileDetails(files []FileDetails) {
 	sort.Slice(
 		files,
 		func(i int, j int) bool {
-			return files[i].RelativePath <
-				files[j].RelativePath
+			return files[i].RelativePath < files[j].RelativePath
 		},
 	)
 }
 
-// FormatSize allows the CLI package to display readable sizes.
+//allows the CLI package to display readable sizes.
 func FormatSize(size int64) string {
 	return formatSize(size)
 }

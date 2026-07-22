@@ -17,33 +17,21 @@ func (app *App) runCopyCommand(args []string) int {
 
 	flagSet.SetOutput(io.Discard)
 
-	flagSet.BoolVar(
-		&recursive,
-		"recursive",
-		false,
-		"copy a directory recursively",
-	)
+	flagSet.BoolVar(&recursive, "recursive", false, "copy a directory recursively")
 
-	flagSet.BoolVar(
-		&overwrite,
-		"overwrite",
-		false,
-		"overwrite an existing destination",
-	)
+	flagSet.BoolVar( &overwrite, "overwrite", false, "overwrite an existing destination")
 
 	err := flagSet.Parse(args)
 
 	if err != nil {
 		fmt.Fprintln(app.Writer,"Error: invalid copy flags:",err)
-
 		return 1
 	}
 
 	remainingArguments := flagSet.Args()
 
 	if len(remainingArguments) != 2 {
-		fmt.Fprintln(app.Writer,"Usage: explorer copy [flags] <source> <destination>")
-
+		fmt.Fprintln(app.Writer, "Usage: explorer copy [flags] <source> <destination>")
 		return 1
 	}
 
@@ -60,7 +48,7 @@ func (app *App) runCopyCommand(args []string) int {
 
 	finalDestination := fileops.PrepareDestination(sourcePath,destinationPath,sourceInfo.IsDir())
 
-	// Ask before replacing an existing destination.
+	// Ask before replacing an existing destination
 	if fileops.PathExists(finalDestination) && !overwrite {
 		confirmed := askForConfirmation(
 			fmt.Sprintf("%s already exists. Overwrite it?",finalDestination),
@@ -68,13 +56,11 @@ func (app *App) runCopyCommand(args []string) int {
 
 		if !confirmed {
 			fmt.Fprintln(app.Writer,"Copy cancelled.")
-
 			return 0
 		}
 
 		overwrite = true
 	}
-
 	err = fileops.Copy(sourcePath,destinationPath,recursive,overwrite)
 
 	if err != nil {
@@ -85,7 +71,6 @@ func (app *App) runCopyCommand(args []string) int {
 	}
 
 	fmt.Fprintln(app.Writer,"Copy completed successfully.")
-
 	app.Logger.Printf("Copied %s to %s",sourcePath,destinationPath)
 
 	return 0

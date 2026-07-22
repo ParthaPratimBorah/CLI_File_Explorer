@@ -15,33 +15,19 @@ func Move(
 	sourceInfo, err := os.Stat(sourcePath)
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not access source %s: %w",
-			sourcePath,
-			err,
-		)
+		return fmt.Errorf( "could not access source %s: %w", sourcePath, err)
 	}
 
-	destinationPath = PrepareDestination(
-		sourcePath,
-		destinationPath,
-		sourceInfo.IsDir(),
-	)
+	destinationPath = PrepareDestination( sourcePath, destinationPath, sourceInfo.IsDir() )
 
-	err = validateDifferentPaths(
-		sourcePath,
-		destinationPath,
-	)
+	err = validateDifferentPaths( sourcePath, destinationPath )
 
 	if err != nil {
 		return err
 	}
 
 	if sourceInfo.IsDir() {
-		err = validateDirectoryDestination(
-			sourcePath,
-			destinationPath,
-		)
+		err = validateDirectoryDestination( sourcePath, destinationPath )
 
 		if err != nil {
 			return err
@@ -50,10 +36,7 @@ func Move(
 
 	if PathExists(destinationPath) {
 		if !overwrite {
-			return fmt.Errorf(
-				"destination already exists: %s",
-				destinationPath,
-			)
+			return fmt.Errorf( "destination already exists: %s", destinationPath )
 		}
 
 		err = RemoveExistingDestination(destinationPath)
@@ -72,27 +55,16 @@ func Move(
 
 	// os.Rename may fail when moving between two drives.
 	// In that case, copy the source and then delete the original.
-	copyError := Copy(
-		sourcePath,
-		destinationPath,
-		true,
-		true,
-	)
+	copyError := Copy( sourcePath, destinationPath, true, true )
 
 	if copyError != nil {
-		return fmt.Errorf(
-			"could not move item: %w",
-			copyError,
-		)
+		return fmt.Errorf( "could not move item: %w", copyError )
 	}
 
 	deleteError := Delete(sourcePath, true)
 
 	if deleteError != nil {
-		return fmt.Errorf(
-			"item was copied but the original could not be deleted: %w",
-			deleteError,
-		)
+		return fmt.Errorf( "item was copied but the original could not be deleted: %w", deleteError )
 	}
 
 	return nil

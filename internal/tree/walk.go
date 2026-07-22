@@ -25,11 +25,7 @@ func walkDirectory(
 	entries, err := os.ReadDir(currentPath)
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not read directory %s: %w",
-			currentPath,
-			err,
-		)
+		return fmt.Errorf( "could not read directory %s: %w", currentPath, err )
 	}
 
 	// Remove hidden files when --hidden is not used.
@@ -64,11 +60,7 @@ func walkDirectory(
 				fileInfo, infoError := entry.Info()
 
 				if infoError != nil {
-					return fmt.Errorf(
-						"could not read information for %s: %w",
-						fullPath,
-						infoError,
-					)
+					return fmt.Errorf( "could not read information for %s: %w", fullPath, infoError )
 				}
 
 				fmt.Fprintf(writer, " (%s)", formatSize(fileInfo.Size()))

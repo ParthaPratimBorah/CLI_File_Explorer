@@ -8,10 +8,8 @@ import (
 )
 
 // .env files bur hide koribile if --hidden flag is not used
-func filterEntries(
-	entries []os.DirEntry,
-	showHidden bool,
-) []os.DirEntry {
+func filterEntries( entries []os.DirEntry, showHidden bool )
+ []os.DirEntry {
 	if showHidden {
 		return entries
 	}
@@ -20,10 +18,7 @@ func filterEntries(
 
 	for _, entry := range entries {
 		if !isHidden(entry.Name()) {
-			visibleEntries = append(
-				visibleEntries,
-				entry,
-			)
+			visibleEntries = append( visibleEntries, entry )
 		}
 	}
 
@@ -48,30 +43,17 @@ func getRootName(rootPath string) string {
 
 // formatSize converts bytes to sizes like kb mb etc
 func formatSize(size int64) string {
-	const (
-		kilobyte = 1024
-		megabyte = 1024 * kilobyte
-		gigabyte = 1024 * megabyte
-	)
+	const ( kilobyte = 1024 megabyte = 1024 * kilobyte gigabyte = 1024 * megabyt )
 
 	switch {
 	case size >= gigabyte:
-		return fmt.Sprintf(
-			"%.2f GB",
-			float64(size)/float64(gigabyte),
-		)
+		return fmt.Sprintf( "%.2f GB", float64(size)/float64(gigabyte) )
 
 	case size >= megabyte:
-		return fmt.Sprintf(
-			"%.2f MB",
-			float64(size)/float64(megabyte),
-		)
+		return fmt.Sprintf( "%.2f MB", float64(size)/float64(megabyte) )
 
 	case size >= kilobyte:
-		return fmt.Sprintf(
-			"%.2f KB",
-			float64(size)/float64(kilobyte),
-		)
+		return fmt.Sprintf( "%.2f KB", float64(size)/float64(kilobyte) )
 
 	default:
 		return fmt.Sprintf("%d B", size)

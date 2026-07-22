@@ -38,11 +38,7 @@ func (app *App) dispatch(command string, args []string) int {
 		"encode",
 		"decode":
 
-		fmt.Fprintf(
-			app.Writer,
-			"The %s command is not implemented yet.\n",
-			command,
-		)
+		fmt.Fprintf( app.Writer, "The %s command is not implemented yet.\n", command)
 
 		return 0
 
@@ -55,11 +51,7 @@ func (app *App) dispatch(command string, args []string) int {
 		return 0
 
 	default:
-		fmt.Fprintf(
-			app.Writer,
-			"Unknown command: %s\n\n",
-			command,
-		)
+		fmt.Fprintf( app.Writer, "Unknown command: %s\n\n", command)
 
 		app.showHelp()
 

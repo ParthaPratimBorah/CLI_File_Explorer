@@ -8,7 +8,7 @@ import (
 	"file-explorer/internal/fileinfo"
 )
 
-// handles the info command.
+// handles the info command
 func (app *App) runInfoCommand(args []string) int {
 	flagSet := flag.NewFlagSet("info", flag.ContinueOnError)
 
@@ -41,111 +41,33 @@ func (app *App) runInfoCommand(args []string) int {
 		return 1
 	}
 
-	fmt.Fprintln(
-		app.Writer,
-		"File Information",
-	)
+	fmt.Fprintln( app.Writer, "File Information" )
 
-	fmt.Fprintln(
-		app.Writer,
-		"----------------",
-	)
-
-	fmt.Fprintf(
-		app.Writer,
-		"File Name:      %s\n",
-		result.FileName,
-	)
+	fmt.Fprintf( app.Writer, "File Name:      %s\n", result.FileName )
 
 	if result.Extension == "" {
-		fmt.Fprintln(
-			app.Writer,
-			"Extension:      No extension",
-		)
+		fmt.Fprintln(app.Writer,"Extension: No extension")
 	} else {
-		fmt.Fprintf(
-			app.Writer,
-			"Extension:      %s\n",
-			result.Extension,
-		)
+		fmt.Fprintf(app.Writer,"Extension: %s\n",result.Extension)
 	}
 
-	fmt.Fprintf(
-		app.Writer,
-		"Absolute Path:  %s\n",
-		result.AbsolutePath,
-	)
-
-	fmt.Fprintf(
-		app.Writer,
-		"Relative Path:  %s\n",
-		result.RelativePath,
-	)
-
-	fmt.Fprintf(
-		app.Writer,
-		"Directory:      %s\n",
-		result.Directory,
-	)
-
-	fmt.Fprintf(
-		app.Writer,
-		"Size:           %d bytes\n",
-		result.Size,
-	)
-
-	fmt.Fprintf(
-		app.Writer,
-		"Readable Size:  %s\n",
-		result.ReadableSize,
-	)
-
-	fmt.Fprintf(
-		app.Writer,
-		"Permissions:    %s\n",
-		result.Permissions,
-	)
+	fmt.Fprintf( app.Writer, "Absolute Path: %s\n", result.AbsolutePath)
+	fmt.Fprintf( app.Writer, "Relative Path: %s\n", result.RelativePath)
+	fmt.Fprintf( app.Writer, "Directory: %s\n", result.Directory )
+	fmt.Fprintf( app.Writer, "Size: %d bytes\n", result.Size )
+	fmt.Fprintf( app.Writer, "Readable Size: %s\n", result.ReadableSize)
+	fmt.Fprintf( app.Writer, "Permissions: %s\n", result.Permissions)
 
 	if result.CreatedKnown {
-		fmt.Fprintf(
-			app.Writer,
-			"Created Time:   %s\n",
-			result.CreatedTime.Format(
-				"2006-01-02 15:04:05",
-			),
-		)
+		fmt.Fprintf( app.Writer, "Created Time: %s\n", result.CreatedTime.Format("2006-01-02 15:04:05") )
 	} else {
-		fmt.Fprintln(
-			app.Writer,
-			"Created Time:   Not available",
-		)
+		fmt.Fprintln( app.Writer, "Created Time:   Not available" )
 	}
 
-	fmt.Fprintf(
-		app.Writer,
-		"Modified Time:  %s\n",
-		result.ModifiedTime.Format(
-			"2006-01-02 15:04:05",
-		),
-	)
-
-	fmt.Fprintf(
-		app.Writer,
-		"File Type:      %s\n",
-		result.FileType,
-	)
-
-	fmt.Fprintf(
-		app.Writer,
-		"Hidden:         %t\n",
-		result.Hidden,
-	)
-
-	fmt.Fprintf(
-		app.Writer,
-		"Checksum:       %s\n",
-		result.Checksum,
-	)
+	fmt.Fprintf( app.Writer, "Modified Time: %s\n", result.ModifiedTime.Format("2006-01-02 15:04:05"))
+	fmt.Fprintf( app.Writer, "File Type: %s\n", result.FileType )
+	fmt.Fprintf( app.Writer, "Hidden: %t\n", result.Hidden )
+	fmt.Fprintf( app.Writer, "Checksum: %s\n", result.Checksum)
 
 	return 0
 }

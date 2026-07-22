@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-// PathExists checks whether a file or directory exists.
+//checks whether a file or directory exists.
 func PathExists(path string) bool {
 	_, err := os.Stat(path)
 
 	return err == nil
 }
 
-// PrepareDestination decides the final destination path.
+//decides the final destination path.
 func PrepareDestination(
 	sourcePath string,
 	destinationPath string,
@@ -28,16 +28,13 @@ func PrepareDestination(
 
 	// For a file copy or move it inside an existing directory.
 	if destinationInfo.IsDir() && !sourceIsDirectory {
-		return filepath.Join(
-			destinationPath,
-			filepath.Base(sourcePath),
-		)
+		return filepath.Join( destinationPath, filepath.Base(sourcePath))
 	}
 
 	return destinationPath
 }
 
-// RemoveExistingDestination removes an existing destination.
+//removes an existing destination.
 func RemoveExistingDestination(path string) error {
 	fileInfo, err := os.Stat(path)
 
@@ -46,11 +43,7 @@ func RemoveExistingDestination(path string) error {
 	}
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not check destination %s: %w",
-			path,
-			err,
-		)
+		return fmt.Errorf( "could not check destination %s: %w", path, err )
 	}
 
 	if fileInfo.IsDir() {
@@ -60,17 +53,13 @@ func RemoveExistingDestination(path string) error {
 	}
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not remove existing destination %s: %w",
-			path,
-			err,
-		)
+		return fmt.Errorf( "could not remove existing destination %s: %w", path, err )
 	}
 
 	return nil
 }
 
-// validateDifferentPaths checks that source and destination are not the same path.
+//checks that source and destination are not the same path.
 func validateDifferentPaths(
 	sourcePath string,
 	destinationPath string,
@@ -78,34 +67,26 @@ func validateDifferentPaths(
 	absoluteSource, err := filepath.Abs(sourcePath)
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not read source path: %w",
-			err,
-		)
+		return fmt.Errorf( "could not read source path: %w", err )
 	}
 
 	absoluteDestination, err := filepath.Abs(destinationPath)
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not read destination path: %w",
-			err,
-		)
+		return fmt.Errorf( "could not read destination path: %w", err )
 	}
 
 	absoluteSource = filepath.Clean(absoluteSource)
 	absoluteDestination = filepath.Clean(absoluteDestination)
 
 	if absoluteSource == absoluteDestination {
-		return fmt.Errorf(
-			"source and destination cannot be the same",
-		)
+		return fmt.Errorf( "source and destination cannot be the same" )
 	}
 
 	return nil
 }
 
-// validateDirectoryDestination prevents copying or moving a directory inside itself.
+//  prevents copying or moving a directory inside itself.
 func validateDirectoryDestination(
 	sourcePath string,
 	destinationPath string,
@@ -113,19 +94,13 @@ func validateDirectoryDestination(
 	absoluteSource, err := filepath.Abs(sourcePath)
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not read source path: %w",
-			err,
-		)
+		return fmt.Errorf( "could not read source path: %w", err )
 	}
 
 	absoluteDestination, err := filepath.Abs(destinationPath)
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not read destination path: %w",
-			err,
-		)
+		return fmt.Errorf( "could not read destination path: %w", err )
 	}
 
 	absoluteSource = filepath.Clean(absoluteSource)
@@ -138,9 +113,7 @@ func validateDirectoryDestination(
 		absoluteDestination,
 		sourceWithSeparator,
 	) {
-		return fmt.Errorf(
-			"cannot place a directory inside itself",
-		)
+		return fmt.Errorf( "cannot place a directory inside itself" )
 	}
 
 	return nil

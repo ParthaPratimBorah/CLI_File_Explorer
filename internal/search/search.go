@@ -12,9 +12,7 @@ func Search(options Options) ([]Result, error) {
 	var results []Result
 
 	if options.Pattern == "" {
-		return results, fmt.Errorf(
-			"search pattern cannot be empty",
-		)
+		return results, fmt.Errorf( "search pattern cannot be empty" )
 	}
 
 	// Create the matcher only once.
@@ -28,11 +26,7 @@ func Search(options Options) ([]Result, error) {
 	rootInfo, err := os.Stat(options.RootPath)
 
 	if err != nil {
-		return results, fmt.Errorf(
-			"could not access path %s: %w",
-			options.RootPath,
-			err,
-		)
+		return results, fmt.Errorf( "could not access path %s: %w", options.RootPath, err )
 	}
 
 	// If the provided path is a file,
@@ -41,11 +35,7 @@ func Search(options Options) ([]Result, error) {
 		if shouldInclude(rootInfo, options) &&
 			matcher.matches(rootInfo.Name()) {
 
-			result := createResult(
-				options.RootPath,
-				rootInfo,
-			)
-
+			result := createResult( options.RootPath, rootInfo )
 			results = append(results, result)
 		}
 
@@ -53,12 +43,7 @@ func Search(options Options) ([]Result, error) {
 	}
 
 	// Search inside the directory.
-	err = searchDirectory(
-		options.RootPath,
-		options,
-		matcher,
-		&results,
-	)
+	err = searchDirectory( options.RootPath, options, matcher, &results )
 
 	if err != nil {
 		return results, err
@@ -82,11 +67,7 @@ func searchDirectory(
 	entries, err := os.ReadDir(currentPath)
 
 	if err != nil {
-		return fmt.Errorf(
-			"could not read directory %s: %w",
-			currentPath,
-			err,
-		)
+		return fmt.Errorf( "could not read directory %s: %w", currentPath, err )
 	}
 
 	for _, entry := range entries {
@@ -98,11 +79,7 @@ func searchDirectory(
 		fileInfo, err := entry.Info()
 
 		if err != nil {
-			return fmt.Errorf(
-				"could not read information for %s: %w",
-				fullPath,
-				err,
-			)
+			return fmt.Errorf( "could not read information for %s: %w", fullPath, err )
 		}
 
 		// Check whether this item should be included
@@ -110,25 +87,14 @@ func searchDirectory(
 		if shouldInclude(fileInfo, options) &&
 			matcher.matches(entry.Name()) {
 
-			result := createResult(
-				fullPath,
-				fileInfo,
-			)
+			result := createResult( fullPath, fileInfo )
 
-			*results = append(
-				*results,
-				result,
-			)
+			*results = append( *results, result )
 		}
 
 		// Search inside child directories.
 		if entry.IsDir() && options.Recursive {
-			err = searchDirectory(
-				fullPath,
-				options,
-				matcher,
-				results,
-			)
+			err = searchDirectory( fullPath, options, matcher, results )
 
 			if err != nil {
 				return err

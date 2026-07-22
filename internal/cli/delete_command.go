@@ -9,31 +9,17 @@ import (
 	"file-explorer/internal/fileops"
 )
 
-// runDeleteCommand handles the delete command.
+//handles the delete command.
 func (app *App) runDeleteCommand(args []string) int {
 	var recursive bool
 	var force bool
 
-	flagSet := flag.NewFlagSet(
-		"delete",
-		flag.ContinueOnError,
-	)
+	flagSet := flag.NewFlagSet( "delete", flag.ContinueOnError)
 
 	flagSet.SetOutput(io.Discard)
 
-	flagSet.BoolVar(
-		&recursive,
-		"recursive",
-		false,
-		"delete a directory and all its contents",
-	)
-
-	flagSet.BoolVar(
-		&force,
-		"force",
-		false,
-		"delete without confirmation",
-	)
+	flagSet.BoolVar( &recursive, "recursive", false, "delete a directory and all its contents")
+	flagSet.BoolVar( &force, "force", false, "delete without confirmation")
 
 	err := flagSet.Parse(args)
 

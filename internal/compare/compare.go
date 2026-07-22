@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-// CompareDirectories compares two directories.
+//compares two directories
 func CompareDirectories(options Options) (Result, error) {
 	var result Result
 
@@ -21,69 +21,53 @@ func CompareDirectories(options Options) (Result, error) {
 		)
 	}
 
-	firstFiles, err := collectFiles(
-		options.FirstPath,
-		options,
-	)
+	firstFiles, err := collectFiles( options.FirstPath, options, )
 
 	if err != nil {
 		return result, err
 	}
 
-	secondFiles, err := collectFiles(
-		options.SecondPath,
-		options,
-	)
+	secondFiles, err := collectFiles( options.SecondPath, options, )
 
 	if err != nil {
 		return result, err
 	}
 
-	// Check files from the first directory.
+	// Check files from the first directory
 	for relativePath, firstFile := range firstFiles {
 		secondFile, exists := secondFiles[relativePath]
 
-		// File exists in first directory but not second.
+		// File exists in first directory but not second
 		if !exists {
-			result.MissingFiles = append(
-				result.MissingFiles,
-				firstFile,
-			)
+			result.MissingFiles = append( result.MissingFiles, firstFile )
 
 			continue
 		}
 
-		// If sizes are different, the files are modified.
+		// If sizes are different, the files are modified
 		if firstFile.Size != secondFile.Size {
 			result.DifferentSizes = append(
 				result.DifferentSizes,
 				SizeDifference{
 					RelativePath: relativePath,
-					FirstSize:    firstFile.Size,
-					SecondSize:   secondFile.Size,
+					FirstSize: firstFile.Size,
+					SecondSize: secondFile.Size,
 				},
 			)
 
-			result.ModifiedFiles = append(
-				result.ModifiedFiles,
-				relativePath,
-			)
+			result.ModifiedFiles = append( result.ModifiedFiles, relativePath)
 
 			continue
 		}
 
 		// Sizes are equal, so calculate hashes.
-		firstHash, err := calculateSHA256(
-			firstFile.AbsolutePath,
-		)
+		firstHash, err := calculateSHA256(firstFile.AbsolutePath)
 
 		if err != nil {
 			return result, err
 		}
 
-		secondHash, err := calculateSHA256(
-			secondFile.AbsolutePath,
-		)
+		secondHash, err := calculateSHA256(secondFile.AbsolutePath)
 
 		if err != nil {
 			return result, err
@@ -113,10 +97,7 @@ func CompareDirectories(options Options) (Result, error) {
 		_, exists := firstFiles[relativePath]
 
 		if !exists {
-			result.ExtraFiles = append(
-				result.ExtraFiles,
-				secondFile,
-			)
+			result.ExtraFiles = append( result.ExtraFiles, secondFile)
 		}
 	}
 
@@ -128,16 +109,14 @@ func CompareDirectories(options Options) (Result, error) {
 	sort.Slice(
 		result.DifferentSizes,
 		func(i int, j int) bool {
-			return result.DifferentSizes[i].RelativePath <
-				result.DifferentSizes[j].RelativePath
+			return result.DifferentSizes[i].RelativePath < result.DifferentSizes[j].RelativePath 
 		},
 	)
 
 	sort.Slice(
 		result.DifferentHashes,
 		func(i int, j int) bool {
-			return result.DifferentHashes[i].RelativePath <
-				result.DifferentHashes[j].RelativePath
+			return result.DifferentHashes[i].RelativePath < result.DifferentHashes[j].RelativePath
 		},
 	)
 
