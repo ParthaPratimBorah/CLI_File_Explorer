@@ -8,27 +8,23 @@ import (
 	"strings"
 )
 
-// RenameOptions stores the batch rename settings.
+//stores the batch rename settings.
 type RenameOptions struct {
-	Prefix       string
-	Suffix       string
-	ReplaceText  string
-	Replacement  string
+	Prefix string
+	Suffix string
+	ReplaceText string
+	Replacement string
 	RegexPattern string
 }
 
-// RenameResult stores one completed rename operation.
+//stores one completed rename operation.
 type RenameResult struct {
 	OldPath string
 	NewPath string
 }
 
-// Rename renames one file or directory.
-func Rename(
-	sourcePath string,
-	newName string,
-	overwrite bool,
-) error {
+//renames one file or directory.
+func Rename(sourcePath string, newName string, overwrite bool) error {
 	if newName == "" {
 		return fmt.Errorf("new name cannot be empty")
 	}
@@ -43,7 +39,7 @@ func Rename(
 		)
 	}
 
-	// Prevent paths such as another-folder/new.txt
+	//paths such as another-folder/new.txt
 	if filepath.Base(newName) != newName {
 		return fmt.Errorf(
 			"new name should not contain a directory path",
@@ -52,15 +48,9 @@ func Rename(
 
 	parentDirectory := filepath.Dir(sourcePath)
 
-	destinationPath := filepath.Join(
-		parentDirectory,
-		newName,
-	)
+	destinationPath := filepath.Join(parentDirectory, newName)
 
-	err = validateDifferentPaths(
-		sourcePath,
-		destinationPath,
-	)
+	err = validateDifferentPaths(sourcePath, destinationPath)
 
 	if err != nil {
 		return err
@@ -145,8 +135,7 @@ func BatchRename(
 		)
 	}
 
-	// First calculate every new name.
-	// This helps us check for errors before renaming.
+	// First calculate every new name This helps us check for errors before renaming.
 	type renameOperation struct {
 		oldPath string
 		newPath string
@@ -240,8 +229,7 @@ func BatchRename(
 	return results, nil
 }
 
-// hasRenameOperation checks whether the user provided
-// at least one batch rename option.
+//checks whether the user provided at least one batch rename option.
 func hasRenameOperation(options RenameOptions) bool {
 	return options.Prefix != "" ||
 		options.Suffix != "" ||
@@ -292,7 +280,7 @@ func createNewName(
 	return newName
 }
 
-// addSuffix adds a suffix before the file extension
+//adds a suffix before the file extension
 func addSuffix(
 	name string,
 	suffix string,

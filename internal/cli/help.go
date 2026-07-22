@@ -83,4 +83,9 @@ func (app *App) showHelp() {
 	fmt.Fprintln(app.Writer, "  --algorithm NAME  Use sha256 or crc32")
 	fmt.Fprintln(app.Writer, "  --recursive       Search inside subdirectories")
 	fmt.Fprintln(app.Writer, "  --hidden          Include hidden files")
+	fmt.Fprintln(app.Writer)
+
+	fmt.Fprintln(app.Writer, "Compare Flags:")
+	fmt.Fprintln(app.Writer, "  --recursive     Compare files inside subdirectories")
+	fmt.Fprintln(app.Writer, "  --hidden        Include hidden files and directories")
 }

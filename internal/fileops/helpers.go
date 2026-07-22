@@ -26,7 +26,7 @@ func PrepareDestination(
 		return destinationPath
 	}
 
-	// For a file, copy or move it inside an existing directory.
+	// For a file copy or move it inside an existing directory.
 	if destinationInfo.IsDir() && !sourceIsDirectory {
 		return filepath.Join(
 			destinationPath,

@@ -80,6 +80,6 @@ func parseGlobalFlags(args []string) (GlobalOptions, []string, error) {
 		return options, nil, fmt.Errorf("invalid global flag: %w", err)
 	}
 
-	// flagSet.Args() returns arguments that were not global flags.
+	//returns arguments that were not global flags.
 	return options, flagSet.Args(), nil
 }

@@ -35,7 +35,7 @@ func walkDirectory(
 	// Remove hidden files when --hidden is not used.
 	entries = filterEntries(entries, options.ShowHidden)
 
-	// Sort entries alphabetically.
+	// Sort alphabetically
 	sort.Slice(entries, func(i int, j int) bool {
 		return entries[i].Name() < entries[j].Name()
 	})

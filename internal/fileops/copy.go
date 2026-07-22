@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-// Copy copies a file or directory.
+//copies a file or directory.
 func Copy(
 	sourcePath string,
 	destinationPath string,
@@ -24,16 +24,9 @@ func Copy(
 		)
 	}
 
-	destinationPath = PrepareDestination(
-		sourcePath,
-		destinationPath,
-		sourceInfo.IsDir(),
-	)
+	destinationPath = PrepareDestination( sourcePath, destinationPath, sourceInfo.IsDir())
 
-	err = validateDifferentPaths(
-		sourcePath,
-		destinationPath,
-	)
+	err = validateDifferentPaths(sourcePath,destinationPath)
 
 	if err != nil {
 		return err
@@ -46,10 +39,7 @@ func Copy(
 			)
 		}
 
-		err = validateDirectoryDestination(
-			sourcePath,
-			destinationPath,
-		)
+		err = validateDirectoryDestination(sourcePath, destinationPath)
 
 		if err != nil {
 			return err
@@ -67,8 +57,7 @@ func Copy(
 		return copyDirectory(
 			sourcePath,
 			destinationPath,
-			overwrite,
-		)
+			overwrite)
 	}
 
 	return copyFile(
